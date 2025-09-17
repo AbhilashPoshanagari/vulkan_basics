@@ -1,22 +1,20 @@
-#include <iostream>
-#include <glm/glm.hpp>
-#include <cstdint>
-#include <cmath>
-#include <gsl/gsl>
-#include <glfw_initialization.h>
+#include <precomp.h>
 #include <GLFW/glfw3.h>
+#include <glfw_initialization.h>
+#include <glfw_monitor.h>
+#include <glfw_window.h>
+#include <graphics.h>
 
-int main() {
-  std::cout << "hello world from vulkan" << std::endl;
-  veng::GlfwInitialization _glfw;
+std::int32_t main(std::int32_t argc, gsl::zstring* argv) {
+  const veng::GlfwInitialization _glfw;
 
-  gsl::not_null<GLFWwindow*> window = glfwCreateWindow(800, 600, "Abhi vulkan engen", nullptr, nullptr);
-  gsl::final_action _clean_window([window]() -> void {
-    glfwDestroyWindow(window);
-  });
+  veng::Window window("Abhi vulkan engen", {800, 600});
+  window.TryMoveToMonitor(1);  // if you want to change monitor
 
-  while (!glfwWindowShouldClose(window)) {
-    glfwPollEvents();
+  veng::Graphics graphics(&window);
+
+  while (!window.ShouldClose()) {
+    glfwPollEvents();  // not window specific
   }
 	return EXIT_SUCCESS;
 }
